@@ -1,0 +1,140 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bit Currents</title>
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+
+
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-3MTN0693VY"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-3MTN0693VY'); 
+  </script>
+  <script
+        src="https://rkooyenga.github.io/assets/javascripts/ga-enhanced.js"
+        data-ga-measurement-id="G-3MTN0693VY"
+        data-enable-auto-link-tracking="true"
+        data-enable-youtube-tracking="false"       
+        data-enable-html-media-tracking="true"
+        data-enable-scroll-tracking="true"
+        data-enable-web-vitals="true"
+        data-enable-spa-tracking="true"
+        data-enable-search-tracking="true"
+        data-enable-vimeo-tracking="false"         
+        data-enable-twitter-tracking="false"
+        data-enable-form-tracking="true"   
+        data-enable-pii-redaction="false"
+        data-enable-adblock-detection="false"
+        data-video-milestones="10,25,50,75,90,95"
+        data-download-extensions="pdf,zip,tgz"
+        data-custom-dimension-map='{"site_section": "Codepen-DF", "user_type": "guest"}'
+        defer>
+    </script>
+    <style>
+body {
+  margin: 0;
+  overflow: hidden;
+  background: black;
+}
+#overlay {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  padding: 20px;
+  z-index: 10;
+  text-align: center;
+}
+svg {
+  width: 100vw;
+  height: auto;
+}
+    </style>
+</head>
+<body>
+<div id="overlay">
+  <svg viewBox="0 0 1000 500" xmlns="http://www.w3.org/2000/svg">
+    <text x="15%" y="345" font-size="130px" font-weight="400" font-family="Arial, sans-serif" fill="white" text-anchor="start">Bit</text>
+    <text x="0%" y="470" font-size="200px" font-weight="900" font-family="Arial, sans-serif" fill="white" text-anchor="start">Currents</text>
+  </svg>
+</div>
+<script>
+//<![CDATA[
+// Three.js Scene Setup
+const scene = new THREE.Scene();
+const camera = new THREE.PerspectiveCamera(
+  75,
+  window.innerWidth / window.innerHeight,
+  0.1,
+  1000
+);
+const renderer = new THREE.WebGLRenderer({ antialias: true });
+renderer.setSize(window.innerWidth, window.innerHeight);
+document.body.appendChild(renderer.domElement);
+
+// Cube Particles
+const cubeGeometry = new THREE.BoxGeometry(0.2, 0.2, 0.2);
+const cubeMaterialGold = new THREE.MeshStandardMaterial({
+  color: 0xffd700,
+  metalness: 1,
+  roughness: 0.3
+});
+const cubeMaterialCopper = new THREE.MeshStandardMaterial({
+  color: 0xb87333,
+  metalness: 1,
+  roughness: 0.4
+});
+
+const cubes = [];
+for (let i = 0; i < 200; i++) {
+  const material = Math.random() > 0.5 ? cubeMaterialGold : cubeMaterialCopper;
+  const cube = new THREE.Mesh(cubeGeometry, material);
+  cube.position.set(
+    (Math.random() - 0.5) * 10,
+    (Math.random() - 0.5) * 10,
+    (Math.random() - 0.5) * 10
+  );
+  cube.rotation.set(
+    Math.random() * Math.PI,
+    Math.random() * Math.PI,
+    Math.random() * Math.PI
+  );
+  scene.add(cube);
+  cubes.push(cube);
+}
+
+// Lighting
+const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
+scene.add(ambientLight);
+const directionalLight = new THREE.DirectionalLight(0xffffff, 1);
+directionalLight.position.set(5, 5, 5);
+scene.add(directionalLight);
+
+camera.position.z = 5;
+
+function animate() {
+  requestAnimationFrame(animate);
+  cubes.forEach((cube) => {
+    cube.rotation.x += 0.01;
+    cube.rotation.y += 0.01;
+  });
+  renderer.render(scene, camera);
+}
+animate();
+
+// Handle window resizing
+window.addEventListener("resize", () => {
+  camera.aspect = window.innerWidth / window.innerHeight;
+  camera.updateProjectionMatrix();
+  renderer.setSize(window.innerWidth, window.innerHeight);
+});
+//]]>
+</script>
+</body>
+</html>
